@@ -9,7 +9,6 @@ import { useState } from "react";
 export default function SignUpPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
@@ -28,12 +27,21 @@ export default function SignUpPage() {
         try {
             await createUserWithEmailAndPassword(auth, email, password);
         }
-        catch (err: any) {
-            if (err.code === 'auth/email-already-in-use') {
-                setError('This email address is already registered.');
+        catch (err) { // <-- The `err` variable is now `unknown`
+
+            // Safely check the error's structure
+            if (err && typeof err === 'object' && 'code' in err) {
+                const errorCode = (err as { code: string }).code;
+                if (errorCode === 'auth/email-already-in-use') {
+                    setError('This email address is already registered.');
+                } else {
+                    setError('Failed to create an account. Please try again.');
+                }
             } else {
-                setError('Failed to create an account. Please try again.');
+                // Fallback for unexpected errors
+                setError('An unexpected error occurred.');
             }
+            console.error(err);
         }
         finally {
             setIsLoading(false);

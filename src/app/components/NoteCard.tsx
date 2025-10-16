@@ -1,6 +1,5 @@
 import React from 'react';
 import { Note } from '../types/Note';
-import { format } from 'path';
 
 const StarIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="text-amber-500">
