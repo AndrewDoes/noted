@@ -2,19 +2,24 @@
 
 import Link from 'next/link';
 import React from 'react';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/AuthContext'; // Using @/ alias for cleaner imports
 import { LayoutDashboard, Notebook, User, History, Upload, LogOut } from 'lucide-react';
 
-export const Sidebar = ({ closeMenu }: { closeMenu?: () => void }) => {
+// 1. REMOVED 'onUploadClick' from the props. It's no longer needed.
+interface SidebarProps {
+  closeMenu?: () => void;
+}
+
+export const Sidebar = ({ closeMenu }: SidebarProps) => {
   const { user, logout } = useAuth();
 
   if (!user) return null;
 
   const navItems = [
     { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { href: '/my-notes', label: 'My Notes', icon: Notebook },
-    { href: '/account', label: 'My Account', icon: User },
-    { href: '/transactions', label: 'Transaction History', icon: History },
+    { href: '/dashboard/my-notes', label: 'My Notes', icon: Notebook },
+    { href: '/dashboard/account', label: 'My Account', icon: User },
+    { href: '/dashboard/transactions', label: 'Transaction History', icon: History },
   ];
 
   const handleLinkClick = () => {
@@ -27,6 +32,8 @@ export const Sidebar = ({ closeMenu }: { closeMenu?: () => void }) => {
     if (closeMenu) closeMenu();
     logout();
   };
+
+  // 2. REMOVED the 'handleUploadClick' function.
 
   return (
     <aside className="h-full w-full bg-gray-800 text-white flex flex-col border-r border-gray-700">
@@ -41,15 +48,19 @@ export const Sidebar = ({ closeMenu }: { closeMenu?: () => void }) => {
       </div>
       <nav className="flex-grow p-2 space-y-1">
         {navItems.map((item) => (
-          <Link key={item.href} href={item.href} onClick={handleLinkClick} className="flex items-center px-3 py-2 space-x-3 text-sm font-medium transition-colors rounded-md hover:bg-gray-700">
+          <Link key={item.href} href={item.href} onClick={handleLinkClick} className="flex items-center px-3 py-2 space-x-3 text-sm font-medium transition-colors rounded-md text-gray-300 hover:bg-gray-700 hover:text-white">
             <item.icon className="w-5 h-5" />
             <span>{item.label}</span>
           </Link>
         ))}
       </nav>
       <div className="p-2 border-t border-gray-700 space-y-2">
-         {/* --- THIS LINK IS NOW CORRECTED --- */}
-         <Link href="/upload" onClick={handleLinkClick} className="flex items-center justify-center w-full px-4 py-2 space-x-3 text-sm font-semibold text-white transition-colors border border-gray-600 rounded-md hover:bg-gray-800">
+         {/* 3. This is now a <Link> pointing to the correct page route. */}
+         <Link 
+           href="/dashboard/upload" 
+           onClick={handleLinkClick} 
+           className="flex items-center justify-center w-full px-4 py-2 space-x-3 text-sm font-semibold text-white transition-colors border border-gray-600 rounded-md hover:bg-gray-700"
+         >
             <Upload className="w-5 h-5" />
             <span>Upload Note</span>
          </Link>
@@ -61,4 +72,3 @@ export const Sidebar = ({ closeMenu }: { closeMenu?: () => void }) => {
     </aside>
   );
 };
-

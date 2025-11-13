@@ -2,7 +2,7 @@
 
 import React, {useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import { db, storage } from '@/firebase/config';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -75,13 +75,13 @@ export default function UploadPage() {
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 flex flex-col items-center">
+    <div className="p-4 sm:p-6 lg:p-8 flex flex-col h-full">
         <h1 className="text-4xl font-bold text-white">Upload Your Note</h1>
         <p className="mt-2 text-gray-400">
           Share your knowledge with the community and earn money.
         </p>
 
-        <form onSubmit={handleSubmit} className="p-8 mt-8 space-y-6 bg-gray-800 rounded-lg max-w-2xl mx-auto">
+        <form onSubmit={handleSubmit} className="p-8 mt-8 space-y-6 bg-gray-800 rounded-lg w-full">
           <div>
             <label htmlFor="title" className="block text-sm font-medium text-gray-300">Note Title</label>
             <input
