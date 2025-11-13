@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore";
+
 export interface Note {
   // This 'id' is what was missing
   id: string; 
@@ -11,5 +13,5 @@ export interface Note {
   // to make the type truly accurate
   authorId: string;
   pdfUrl: string;
-  createdAt: any; // Using 'any' for serverTimestamp for simplicity
+  createdAt: Timestamp; // Using 'any' for serverTimestamp for simplicity
 }
