@@ -22,10 +22,16 @@ export default function SignUpPage() {
             return;
         }
 
+        if(email.toString() != email.toLowerCase()){
+            setError('Please use a valid Binusian email address (not containing uppercase).');
+            return;
+        }
+
         setIsLoading(true);
 
         try {
             await createUserWithEmailAndPassword(auth, email, password);
+            router.push('/create-profile')
         }
         catch (err) { // <-- The `err` variable is now `unknown`
 

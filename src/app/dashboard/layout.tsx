@@ -6,8 +6,6 @@ import { MenuIcon } from '../components/icons/MenuIcon';
 import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-// We no longer need the UploadModal
-// import { UploadModal } from '@/components/UploadModal'; 
 
 export default function DashboardLayout({
   children,
@@ -15,18 +13,23 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  // We no longer need the modal state
-  // const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
-  const { user, isLoading } = useAuth();
+  
+  const { user, userProfile, isLoading } = useAuth();
   const router = useRouter();
 
   React.useEffect(() => {
-    if (!isLoading && !user) {
-      router.push('/login');
+    if (!isLoading) {
+      if (!user) {
+        // Case 1: Not logged in
+        router.push('/login');
+      } else if (user && !userProfile) {
+        router.push('/create-profile');
+      }
     }
-  }, [user, isLoading, router]);
+  }, [user, userProfile, isLoading, router]);
 
-  if (isLoading || !user) {
+  // Show a loading screen while auth/profile check is happening
+  if (isLoading || !user || !userProfile) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-900">
         <p className="text-white">Loading...</p>
@@ -34,11 +37,11 @@ export default function DashboardLayout({
     );
   }
 
+  // If we get here, the user is fully authenticated and has a profile.
   return (
     <div className="flex h-screen bg-gray-900 text-white">
       {/* --- Desktop Sidebar (WIDER) --- */}
       <div className="hidden md:block md:w-1/3 lg:w-1/4 xl:w-1/5 flex-shrink-0">
-        {/* We no longer pass the onUploadClick prop */}
         <Sidebar />
       </div>
 
@@ -48,10 +51,7 @@ export default function DashboardLayout({
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <Sidebar 
-          closeMenu={() => setIsSidebarOpen(false)} 
-          // We no longer pass the onUploadClick prop
-        />
+        <Sidebar closeMenu={() => setIsSidebarOpen(false)} />
       </div>
 
       {/* Main Content Area */}
@@ -68,8 +68,7 @@ export default function DashboardLayout({
         </main>
       </div>
       
-      {/* We no longer need the modal here */}
-      {/* {isUploadModalOpen && <UploadModal onClose={() => setIsUploadModalOpen(false)} />} */}
+       {/* We'll re-add the modal logic in the next step */}
       
        {isSidebarOpen && (
         <div

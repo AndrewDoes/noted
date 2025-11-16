@@ -1,40 +1,58 @@
-import React from 'react';
-import { Note } from '../types/Note';
-
-const StarIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="text-amber-500">
-        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-    </svg>
-);
+import { Note } from "../types/Note";
+import { Star, FileText } from "lucide-react";
+import Link from "next/link"; // 1. Import Link
 
 interface NoteCardProps {
-    note: Note;
+  note: Note;
 }
 
-export const NoteCard: React.FC<NoteCardProps> = ({ note }) => {
-    const formatCurrency = (value: number) => {
-        return new Intl.NumberFormat('id-ID', {
-            style: 'currency',
-            currency: 'IDR',
-            minimumFractionDigits: 0,
-        }).format(value);
-    };
-    return (
-        <div className="flex flex-col h-full p-5 transition-all duration-300 transform bg-gray-800 border border-gray-700 rounded-lg hover:border-indigo-500 hover:-translate-y-1">
-            <div className="flex-grow">
-                <h3 className="mb-1 text-lg font-bold text-white">{note.title}</h3>
-                <p className="text-sm text-gray-400">{note.course}</p>
+const formatCurrency = (value: number) => {
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    minimumFractionDigits: 0,
+  }).format(value);
+};
+
+export const NoteCard = ({ note }: NoteCardProps) => {
+  return (
+    // 2. Wrap the card in a Link component with a dynamic href
+    <Link href={`/dashboard/note/${note.id}`}>
+      <div className="transition-all duration-300 ease-in-out bg-gray-800 border border-gray-700 rounded-lg shadow-lg cursor-pointer overflow-hidden hover:border-indigo-500 hover:-translate-y-1">
+        
+        {note.thumbnailUrl ? (
+          <img 
+            src={note.thumbnailUrl} 
+            alt={`${note.title} preview`} 
+            className="w-full h-32 object-cover" 
+          />
+        ) : (
+          <div className="w-full h-32 bg-gray-700/50 flex flex-col items-center justify-center text-gray-500">
+            <FileText className="w-8 h-8" />
+            <span className="mt-2 text-xs font-semibold">No Preview Available</span>
+          </div>
+        )}
+
+        <div className="p-4">
+          <div className="flex-grow">
+            <h3 className="text-lg font-bold text-white truncate">{note.title}</h3>
+            <p className="mt-1 text-sm text-gray-400 truncate">{note.course}</p>
+          </div>
+          <div className="pt-4 mt-4 border-t border-gray-700">
+            <div className="flex items-center justify-between">
+              <p className="text-xs text-gray-400 truncate">{note.author}</p>
+              <div className="flex items-center space-x-1 flex-shrink-0">
+                <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                <span className="text-sm font-semibold text-white">{note.rating}</span>
+              </div>
             </div>
-            <div className="flex items-end justify-between mt-4">
-                <div>
-                    <p className="text-xs text-gray-400">{note.author}</p>
-                    <div className="flex items-center mt-1">
-                        <StarIcon />
-                        <span className="ml-1 font-bold text-white">{note.rating}</span>
-                    </div>
-                </div>
-                <p className="text-xl font-bold text-indigo-400">{formatCurrency(note.price)},00</p>
-            </div>
+            
+            <p className="mt-3 text-lg font-semibold text-indigo-400">
+              {formatCurrency(note.price)}
+            </p>
+          </div>
         </div>
-    );
+      </div>
+    </Link>
+  );
 };
