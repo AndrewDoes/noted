@@ -112,7 +112,7 @@ export default function CreateProfilePage() {
     <div className="flex items-center justify-center min-h-screen bg-gray-900">
       <div className="w-full max-w-md p-8 space-y-6 bg-gray-800 rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold text-center text-white">Welcome to Noted!</h1>
-        <p className="text-center text-gray-400">Let's set up your profile.</p>
+        <p className="text-center text-gray-400">Let&aposs set up your profile.</p>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-300">Full Name</label>

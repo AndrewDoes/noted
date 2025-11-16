@@ -6,6 +6,7 @@ import { db, auth } from '@/firebase/config';
 import { doc, updateDoc } from 'firebase/firestore';
 import { updateProfile, reauthenticateWithCredential, EmailAuthProvider, updatePassword } from 'firebase/auth';
 import { User, Lock, Mail } from 'lucide-react';
+import { FirebaseError } from 'firebase/app';
 
 const binusMajors = [
     "Accounting",
@@ -105,12 +106,20 @@ export default function AccountPage() {
             setPasswordMessage("Password changed successfully!");
             setCurrentPassword('');
             setNewPassword('');
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error("Error changing password: ", err);
-            if (err.code === 'auth/wrong-password') {
-                setPasswordError("Incorrect current password.");
+            if (err instanceof FirebaseError) {
+                // Now we can safely access err.code
+                if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+                    setPasswordError("Incorrect current password.");
+                } else if (err.code === 'auth/weak-password') {
+                    setPasswordError("New password must be at least 6 characters.");
+                } else {
+                    setPasswordError("Failed to change password. Please try again.");
+                }
             } else {
-                setPasswordError("Failed to change password. Please try again.");
+                // Handle other, non-Firebase errors
+                setPasswordError("An unexpected error occurred.");
             }
         }
     };
