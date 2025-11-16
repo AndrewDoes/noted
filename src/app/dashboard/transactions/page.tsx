@@ -153,7 +153,7 @@ export default function TransactionsPage() {
                 // This is the "empty state"
                 <div className="flex flex-col items-center justify-center text-center text-gray-400 border-2 border-dashed border-gray-700 rounded-lg p-12">
                     <ShoppingCart className="w-16 h-16 mb-4" />
-                    <h2 className="text-xl font-semibold text-white">You haven&apost purchased any notes yet.</h2>
+                    <h2 className="text-xl font-semibold text-white">You haven&apos;t purchased any notes yet.</h2>
                     <p className="mt-2">Your purchased notes will appear here.</p>
                 </div>
             ) : (
