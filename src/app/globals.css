@@ -1,26 +1,133 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* --- Light Mode Defaults --- */
+  
+  /* UPDATED: Darker gray background (Slate 100) */
+  /* This creates a clear boundary between the page and the white cards */
+  --background: #f1f5f9; 
+  --foreground: #0f172a; /* Slate 900 */
+
+  /* Cards remain Pure White to "pop" off the gray background */
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+
+  /* Popovers */
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+
+  /* Primary Brand Color (Indigo 600) */
+  --primary: #4f46e5; 
+  --primary-foreground: #ffffff;
+
+  /* Secondary (Slate 200) - slightly darker than background */
+  --secondary: #e2e8f0; 
+  --secondary-foreground: #0f172a;
+
+  /* Muted */
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b; /* Slate 500 */
+
+  /* Accents (Hover states - Slate 100) */
+  --accent: #f1f5f9;
+  --accent-foreground: #0f172a;
+
+  /* Destructive (Red) */
+  --destructive: #ef4444; 
+  --destructive-foreground: #ffffff;
+
+  /* UPDATED: Darker Borders (Slate 300) */
+  /* This draws a distinct line around your cards and inputs */
+  --border: #cbd5e1; 
+  --input: #cbd5e1;
+  --ring: #4f46e5; 
+
+  /* Success */
+  --success: #22c55e;
+  --success-foreground: #ffffff;
+
+  --radius: 0.5rem;
+}
+
+/* --- Dark Mode Overrides (High Contrast) --- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Very dark background (Gray 950) */
+    --background: #030712; 
+    --foreground: #f9fafb; 
+
+    /* Lighter gray cards (Gray 800) */
+    --card: #1f2937; 
+    --card-foreground: #f9fafb;
+
+    --popover: #1f2937;
+    --popover-foreground: #f9fafb;
+
+    /* Lighter Indigo for visibility on dark backgrounds */
+    --primary: #6366f1; 
+    --primary-foreground: #ffffff;
+
+    --secondary: #374151; 
+    --secondary-foreground: #f9fafb;
+
+    --muted: #374151;
+    --muted-foreground: #9ca3af; 
+
+    --accent: #374151;
+    --accent-foreground: #f9fafb;
+
+    --destructive: #7f1d1d; 
+    --destructive-foreground: #fca5a5; 
+
+    /* Dark gray borders (Gray 700) */
+    --border: #374151; 
+    --input: #374151;
+    --ring: #6366f1; 
+    
+    --success: #14532d; 
+    --success-foreground: #86efac; 
+  }
 }
 
 @theme inline {
+  /* Map CSS variables to Tailwind Utility Classes */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
