@@ -36,35 +36,35 @@ export const Sidebar = ({ closeMenu }: SidebarProps) => {
   // 2. REMOVED the 'handleUploadClick' function.
 
   return (
-    <aside className="h-full w-full bg-gray-800 text-white flex flex-col border-r border-gray-700">
-      <div className="p-4 border-b border-gray-700">
+    <aside className="h-full w-full bg-card text-card-foreground flex flex-col border-r border-border">
+      <div className="p-4 border-b border-border">
         <Link href="/dashboard" onClick={handleLinkClick}>
           <h1 className="text-2xl font-bold">Noted</h1>
         </Link>
       </div>
-      <div className="px-4 py-3 border-b border-gray-700">
-        <p className="text-sm text-gray-400">Signed in as</p>
+      <div className="px-4 py-3 border-b border-border">
+        <p className="text-sm text-muted-foreground">Signed in as</p>
         <p className="font-medium truncate">{user.email}</p>
       </div>
       <nav className="flex-grow p-2 space-y-1">
         {navItems.map((item) => (
-          <Link key={item.href} href={item.href} onClick={handleLinkClick} className="flex items-center px-3 py-2 space-x-3 text-sm font-medium transition-colors rounded-md text-gray-300 hover:bg-gray-700 hover:text-white">
+          <Link key={item.href} href={item.href} onClick={handleLinkClick} className="flex items-center px-3 py-2 space-x-3 text-sm font-medium transition-colors rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground">
             <item.icon className="w-5 h-5" />
             <span>{item.label}</span>
           </Link>
         ))}
       </nav>
-      <div className="p-2 border-t border-gray-700 space-y-2">
+      <div className="p-2 border-t border-border space-y-2">
          {/* 3. This is now a <Link> pointing to the correct page route. */}
          <Link 
            href="/dashboard/upload" 
            onClick={handleLinkClick} 
-           className="flex items-center justify-center w-full px-4 py-2 space-x-3 text-sm font-semibold text-white transition-colors border border-gray-600 rounded-md hover:bg-gray-700"
+           className="flex items-center justify-center w-full px-4 py-2 space-x-3 text-sm font-semibold text-secondary-foreground transition-colors border border-border rounded-md hover:bg-accent"
          >
             <Upload className="w-5 h-5" />
             <span>Upload Note</span>
          </Link>
-         <button onClick={handleLogout} className="flex items-center justify-center w-full px-4 py-2 space-x-3 text-sm font-semibold text-white transition-colors bg-indigo-600 rounded-md hover:bg-indigo-700">
+         <button onClick={handleLogout} className="flex items-center justify-center w-full px-4 py-2 space-x-3 text-sm font-semibold text-destructive-foreground transition-colors bg-destructive rounded-md hover:bg-destructive/85">
             <LogOut className="w-5 h-5" />
             <span>Logout</span>
          </button>
