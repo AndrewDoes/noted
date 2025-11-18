@@ -1,6 +1,5 @@
 import React from 'react';
 
-// Props interface defines what data the component needs
 interface FilterChipProps {
     label: string;
     isSelected?: boolean;
@@ -11,13 +10,14 @@ export const FilterChip: React.FC<FilterChipProps> = ({ label, isSelected = fals
     return (
         <button
             onClick={onClick}
-            className={`px-4 py-2 text-sm font-semibold rounded-full transition-colors whitespace-nowrap ${isSelected
-                    ? 'bg-indigo-500 text-white'
-                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+            // 1. 'border' is in base classes to prevent layout shift
+            // 2. Border COLOR changes based on state
+            className={`px-4 py-2 text-sm font-semibold rounded-full transition-colors whitespace-nowrap border ${isSelected
+                    ? 'bg-primary text-primary-foreground border-primary' // Active: Border matches Background (Indigo)
+                    : 'bg-card text-card-foreground border-border hover:bg-accent hover:text-accent-foreground' // Inactive: Gray border
                 }`}
         >
             {label}
         </button>
     );
 };
-
