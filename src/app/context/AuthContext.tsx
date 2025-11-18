@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { onAuthStateChanged, User, signOut } from 'firebase/auth';
 import { auth, db } from '@/firebase/config';
-import { doc, getDoc, DocumentData } from 'firebase/firestore'; // Import firestore functions
+import { doc, getDoc } from 'firebase/firestore';
 
 // Define the shape of the user profile data from Firestore
 export interface UserProfile {
@@ -14,37 +14,44 @@ export interface UserProfile {
   createdAt: Date;
 }
 
-// Define the shape of the context's value
 interface AuthContextType {
   user: User | null;
-  userProfile: UserProfile | null; // Add userProfile state
+  userProfile: UserProfile | null;
   isLoading: boolean;
   logout: () => Promise<void>;
+  refreshProfile: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null); // Add profile state
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Helper function to fetch profile
+  const fetchUserProfile = async (currentUser: User) => {
+    try {
+      const userDocRef = doc(db, 'users', currentUser.uid);
+      const userDocSnap = await getDoc(userDocRef);
+      
+      if (userDocSnap.exists()) {
+        setUserProfile(userDocSnap.data() as UserProfile);
+      } else {
+        setUserProfile(null); 
+      }
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+      setUserProfile(null);
+    }
+  };
+
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
         // User is logged in
-        setUser(user);
-        // Now, try to fetch their profile from Firestore
-        const userDocRef = doc(db, 'users', user.uid);
-        const userDocSnap = await getDoc(userDocRef);
-        
-        if (userDocSnap.exists()) {
-          // Profile exists, set it
-          setUserProfile(userDocSnap.data() as UserProfile);
-        } else {
-          // User is authenticated but has no profile document
-          setUserProfile(null); 
-        }
+        setUser(currentUser);
+        await fetchUserProfile(currentUser);
       } else {
         // User is logged out
         setUser(null);
@@ -53,21 +60,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setIsLoading(false);
     });
 
-    // Cleanup subscription on unmount
     return () => unsubscribe();
   }, []);
 
-  // Define the logout function
   const logout = async () => {
     try {
       await signOut(auth);
-      // User and profile will be set to null by the onAuthStateChanged listener
     } catch (error) {
       console.error("Error signing out: ", error);
     }
   };
 
-  const value = { user, userProfile, isLoading, logout };
+  // NEW: Function to manually refresh the profile
+  const refreshProfile = async () => {
+    if (user) {
+      await fetchUserProfile(user);
+    }
+  };
+
+  const value = { user, userProfile, isLoading, logout, refreshProfile };
 
   return (
     <AuthContext.Provider value={value}>

@@ -7,7 +7,6 @@ import { db } from '@/firebase/config';
 import { doc, setDoc } from 'firebase/firestore';
 import { updateProfile } from 'firebase/auth';
 
-// A list of common Binus majors for the dropdown
 const binusMajors = [
   "Accounting",
   "Architecture",
@@ -30,26 +29,24 @@ const binusMajors = [
   "Mass Communication",
   "Psychology",
   "Visual Communication Design",
-  "Other", // Always good to have an "Other" option
+  "Other", 
 ];
 
 export default function CreateProfilePage() {
-  const { user, userProfile, isLoading } = useAuth();
+  // Destructure refreshProfile from useAuth
+  const { user, userProfile, isLoading, refreshProfile } = useAuth(); 
   const router = useRouter();
   
   const [fullName, setFullName] = useState('');
-  const [major, setMajor] = useState(''); // The state remains the same
+  const [major, setMajor] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // This effect protects the page
   useEffect(() => {
     if (!isLoading) {
       if (!user) {
-        // Not logged in, send to login
         router.push('/login');
       } else if (userProfile) {
-        // Already has a profile, send to dashboard
         router.push('/dashboard');
       }
     }
@@ -61,7 +58,6 @@ export default function CreateProfilePage() {
       setError("User not found. Please log in again.");
       return;
     }
-    // This validation still works perfectly for the dropdown
     if (!fullName || !major) {
       setError("Please fill in all fields.");
       return;
@@ -71,13 +67,12 @@ export default function CreateProfilePage() {
     setError(null);
 
     try {
-      // 1. Update their auth profile (this stores the name in Firebase Auth)
+      // 1. Update their auth profile
       await updateProfile(user, {
         displayName: fullName,
       });
 
       // 2. Create their user document in Firestore
-      // We use the user's UID as the document ID for a direct link
       const userDocRef = doc(db, 'users', user.uid);
       await setDoc(userDocRef, {
         uid: user.uid,
@@ -87,7 +82,7 @@ export default function CreateProfilePage() {
         createdAt: new Date(),
       });
       
-      // 3. Redirect to the dashboard
+      await refreshProfile();
       router.push('/dashboard');
 
     } catch (err) {
@@ -98,7 +93,6 @@ export default function CreateProfilePage() {
     }
   };
 
-  // Show loading screen while checking auth
   if (isLoading || !user || userProfile) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-900">
@@ -107,12 +101,11 @@ export default function CreateProfilePage() {
     );
   }
 
-  // Once loaded, show the profile form
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-900">
       <div className="w-full max-w-md p-8 space-y-6 bg-gray-800 rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold text-center text-white">Welcome to Noted!</h1>
-        <p className="text-center text-gray-400">Let&aposs set up your profile.</p>
+        <p className="text-center text-gray-400">Let&apos;s set up your profile.</p>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-300">Full Name</label>
@@ -126,14 +119,12 @@ export default function CreateProfilePage() {
             />
           </div>
 
-          {/* --- THIS IS THE CHANGED SECTION --- */}
           <div>
             <label className="block text-sm font-medium text-gray-300">Major</label>
             <select
               value={major}
               onChange={(e) => setMajor(e.target.value)}
               required
-              // This logic makes the "Select" text gray, like a placeholder
               className={`w-full px-3 py-2 mt-1 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
                 major === '' ? 'text-gray-400' : 'text-white'
               }`}
@@ -146,7 +137,6 @@ export default function CreateProfilePage() {
               ))}
             </select>
           </div>
-          {/* --- END OF CHANGED SECTION --- */}
 
           {error && <p className="text-sm text-center text-red-500">{error}</p>}
           <div>

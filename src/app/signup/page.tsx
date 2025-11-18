@@ -31,11 +31,9 @@ export default function SignUpPage() {
 
         try {
             await createUserWithEmailAndPassword(auth, email, password);
-            router.push('/create-profile')
+            router.push('/login');
         }
-        catch (err) { // <-- The `err` variable is now `unknown`
-
-            // Safely check the error's structure
+        catch (err) {
             if (err && typeof err === 'object' && 'code' in err) {
                 const errorCode = (err as { code: string }).code;
                 if (errorCode === 'auth/email-already-in-use') {
@@ -51,7 +49,6 @@ export default function SignUpPage() {
         }
         finally {
             setIsLoading(false);
-            router.push('/login');
         }
     }
     return (
