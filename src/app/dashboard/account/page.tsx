@@ -126,87 +126,87 @@ export default function AccountPage() {
 
     return (
         <div className="p-4 sm:p-6 lg:p-8">
-            <h1 className="text-3xl font-bold text-white mb-8">My Account</h1>
+            <h1 className="text-3xl font-bold text-foreground mb-8">My Account</h1>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-400 h-full mx-auto">
 
                 {/* --- Profile Details Form --- */}
-                <form onSubmit={handleProfileUpdate} className="bg-gray-800 p-6 rounded-lg shadow-lg space-y-4">
-                    <h2 className="text-xl font-semibold text-white mb-4 flex items-center">
+                <form onSubmit={handleProfileUpdate} className="bg-card p-6 rounded-lg shadow-lg space-y-4">
+                    <h2 className="text-xl font-semibold text-card-foreground mb-4 flex items-center">
                         <User className="w-5 h-5 mr-2" />
                         Profile Details
                     </h2>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-300">Email</label>
-                        <div className="flex items-center w-full px-3 py-2 mt-1 text-gray-400 bg-gray-700/50 border border-gray-600 rounded-md">
-                            <Mail className="w-5 h-5 mr-2 text-gray-500" />
+                        <label className="block text-sm font-medium text-muted-foreground">Email</label>
+                        <div className="flex items-center w-full px-3 py-2 mt-1 text-muted-foreground bg-muted/50 border border-border rounded-md">
+                            <Mail className="w-5 h-5 mr-2 text-muted-foreground" />
                             <span>{user?.email} (Cannot be changed)</span>
                         </div>
                     </div>
 
                     <div>
-                        <label htmlFor="fullName" className="block text-sm font-medium text-gray-300">Full Name</label>
+                        <label htmlFor="fullName" className="block text-sm font-medium text-muted-foreground">Full Name</label>
                         <input
                             type="text"
                             id="fullName"
                             value={fullName}
                             onChange={(e) => setFullName(e.target.value)}
-                            className="block w-full px-4 py-3 mt-1 text-white bg-gray-700 border-gray-600 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                            className="block w-full px-4 py-3 mt-1 text-secondary-foreground bg-secondary border-border rounded-md foucs:outline-none focus:ring-2 focus:ring-ring focus:border-primary"
                         />
                     </div>
 
                     <div>
-                        <label htmlFor="major" className="block text-sm font-medium text-gray-300">Major</label>
+                        <label htmlFor="major" className="block text-sm font-medium text-muted-foreground">Major</label>
                         <select
                             value={major}
                             onChange={(e) => setMajor(e.target.value)}
                             required
                             // This logic makes the "Select" text gray, like a placeholder
-                            className={`w-full px-3 py-2 mt-1 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${major === '' ? 'text-gray-400' : 'text-white'
+                            className={`w-full px-3 py-2 mt-1 bg-secondary border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring ${major === '' ? 'text-secondary-foreground' : 'text-accent-foreground'
                                 }`}
                         >
                             <option value="" disabled>Select your major</option>
                             {binusMajors.map((maj) => (
-                                <option key={maj} value={maj} className="text-white">
+                                <option key={maj} value={maj} className="text-foreground">
                                     {maj}
                                 </option>
                             ))}
                         </select>
                     </div>
 
-                    {profileError && <p className="text-sm text-red-500">{profileError}</p>}
-                    {profileMessage && <p className="text-sm text-green-500">{profileMessage}</p>}
+                    {profileError && <p className="text-sm text-destructive">{profileError}</p>}
+                    {profileMessage && <p className="text-sm text-success">{profileMessage}</p>}
 
                     <button
                         type="submit"
-                        className="w-full px-4 py-2 font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700"
+                        className="w-full px-4 py-2 font-semibold text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
                     >
                         Save Profile
                     </button>
                 </form>
 
                 {/* --- Change Password Form --- */}
-                <form onSubmit={handlePasswordChange} className="bg-gray-800 p-6 rounded-lg shadow-lg space-y-4">
-                    <h2 className="text-xl font-semibold text-white mb-4 flex items-center">
+                <form onSubmit={handlePasswordChange} className="bg-card p-6 rounded-lg shadow-lg space-y-4">
+                    <h2 className="text-xl font-semibold text-card-foreground mb-4 flex items-center">
                         <Lock className="w-5 h-5 mr-2" />
                         Change Password
                     </h2>
 
                     <div>
-                        <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-300">Current Password</label>
+                        <label htmlFor="currentPassword" className="block text-sm font-medium text-muted-foreground">Current Password</label>
                         <input
                             type="password"
                             id="currentPassword"
                             value={currentPassword}
                             onChange={(e) => setCurrentPassword(e.target.value)}
                             required
-                            className="block w-full px-4 py-3 mt-1 text-white bg-gray-700 border-gray-600 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                            className="block w-full px-4 py-3 mt-1 text-secondary-foreground bg-secondary border-border rounded-md focus:ring-ring focus:border-primary"
                         />
                     </div>
 
                     <div>
-                        <label htmlFor="newPassword" className="block text-sm font-medium text-gray-300">New Password</label>
+                        <label htmlFor="newPassword" className="block text-sm font-medium text-muted-foreground">New Password</label>
                         <input
                             type="password"
                             id="newPassword"
@@ -214,16 +214,16 @@ export default function AccountPage() {
                             onChange={(e) => setNewPassword(e.target.value)}
                             required
                             minLength={6}
-                            className="block w-full px-4 py-3 mt-1 text-white bg-gray-700 border-gray-600 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                            className="block w-full px-4 py-3 mt-1 text-secondary-foreground bg-secondary border-border rounded-md focus:ring-ring focus:border-primary"
                         />
                     </div>
 
-                    {passwordError && <p className="text-sm text-red-500">{passwordError}</p>}
-                    {passwordMessage && <p className="text-sm text-green-500">{passwordMessage}</p>}
+                    {passwordError && <p className="text-sm text-destructive">{passwordError}</p>}
+                    {passwordMessage && <p className="text-sm text-success">{passwordMessage}</p>}
 
                     <button
                         type="submit"
-                        className="w-full px-4 py-2 font-semibold text-white bg-gray-600 rounded-md hover:bg-gray-500"
+                        className="w-full px-4 py-2 font-semibold text-secondary-foreground bg-secondary rounded-md transition-all duration-50 hover:bg-accent hover:border hover:scale-[1.02] hover:border-border"
                     >
                         Change Password
                     </button>
