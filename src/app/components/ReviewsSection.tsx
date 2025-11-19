@@ -276,7 +276,7 @@ export const ReviewsSection = ({ noteId, canReview }: ReviewsSectionProps) => {
               </div>
               
               {/* Content */}
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between mb-1">
                   <h4 className="font-semibold text-foreground">{review.userName}</h4>
                   <div className="flex items-center space-x-3">
@@ -327,7 +327,7 @@ export const ReviewsSection = ({ noteId, canReview }: ReviewsSectionProps) => {
                       className="flex-1 px-3 py-2 text-sm mb-2 mr-0 md:mr-2 md:mb-0  rounded-md bg-secondary border border-border focus:outline-none focus:border-primary "
                       autoFocus
                     />
-                    <button type="submit" className="px-3 py-2 bg-primary text-primary-foreground text-sm rounded-md font-medium">
+                    <button type="submit" className="px-3 py-2 whitespace-nowrap bg-primary text-primary-foreground text-sm rounded-md font-medium">
                       Reply
                     </button>
                   </form>
