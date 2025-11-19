@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { auth } from '@/firebase/config';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { ArrowLeft } from 'lucide-react';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -47,7 +48,7 @@ export default function LoginPage() {
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-background">
-            <div className="w-full max-w-md p-8 space-y-6 bg-card border-border rounded-lg shadow-lg">
+            <div className="w-full max-w-md h-screen flex flex-col md:h-fit items-center justify-center p-8 space-y-6 bg-card border-border rounded-lg shadow-lg">
                 <h1 className="text-3xl font-bold text-center text-card-foreground">Log In to Noted</h1>
                 <form onSubmit={handleLogin} className="space-y-6">
                     <div>
@@ -87,6 +88,13 @@ export default function LoginPage() {
                     Don&apos;t have an account?{' '}
                     <Link href="/signup" className="font-medium text-primary/80 hover:underline">
                         Sign Up
+                    </Link>
+                </p>
+
+                <p className="text-sm text-center text-muted-foreground">
+                    <Link href="/" className="font-medium text-primary/80 hover:border-b hover:border-primary flex justify-center items-center gap-2">
+                        <ArrowLeft className="" />
+                        Go back
                     </Link>
                 </p>
             </div>

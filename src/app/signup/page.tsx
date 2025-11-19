@@ -2,6 +2,7 @@
 
 import { auth } from "@/firebase/config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -22,7 +23,7 @@ export default function SignUpPage() {
             return;
         }
 
-        if(email.toString() != email.toLowerCase()){
+        if (email.toString() != email.toLowerCase()) {
             setError('Please use a valid Binusian email address (not containing uppercase).');
             return;
         }
@@ -53,7 +54,7 @@ export default function SignUpPage() {
     }
     return (
         <div className="flex items-center justify-center min-h-screen bg-background">
-            <div className="w-full max-w-md p-8 space-y-6 bg-card border-border rounded-lg shadow-lg">
+            <div className="w-full max-w-md h-screen flex flex-col md:h-fit items-center justify-center p-8 space-y-6 bg-card border-border rounded-lg shadow-lg">
                 <h1 className="text-3xl font-bold text-center text-card-foreground">Create Your Noted Account</h1>
                 <form onSubmit={handleSignUp} className="space-y-6">
                     <div>
@@ -94,6 +95,13 @@ export default function SignUpPage() {
                     Already have an account?{' '}
                     <Link href="/login" className="font-medium text-primary/80 hover:underline">
                         Log In
+                    </Link>
+                </p>
+
+                <p className="text-sm text-center text-muted-foreground">
+                    <Link href="/" className="font-medium text-primary/80 hover:border-b hover:border-primary flex justify-center items-center gap-2">
+                        <ArrowLeft className="" />
+                        Go back
                     </Link>
                 </p>
             </div>
