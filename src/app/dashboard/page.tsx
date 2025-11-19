@@ -69,7 +69,7 @@ export default function DashboardPage() {
 
   return (
     <div className="p-4 sm:p-6 lg:p-8">
-      <h1 className="text-3xl font-bold text-white mb-6">Welcome, {userProfile?.displayName || user?.email}!</h1>
+      <h1 className="text-3xl font-bold text-foreground mb-6">Welcome, {userProfile?.displayName || user?.email}!</h1>
 
       <section className="space-y-8">
         <SearchBar 
@@ -89,11 +89,11 @@ export default function DashboardPage() {
         </div>
 
         <div>
-          <h2 className="mb-4 text-2xl font-bold text-white">{selectedFilter} Notes</h2>
+          <h2 className="mb-4 text-2xl font-bold text-foreground">{selectedFilter} Notes</h2>
           {isLoading ? (
-            <p className="text-center text-gray-400">Loading notes...</p>
+            <p className="text-center text-muted-foreground">Loading notes...</p>
           ) : error ? (
-            <p className="text-center text-red-500">{error}</p>
+            <p className="text-center text-destructive">{error}</p>
           ) : (
             <>
               {filteredNotes.length > 0 ? (
@@ -103,9 +103,9 @@ export default function DashboardPage() {
                   ))}
                 </div>
               ) : (
-                <div className="flex flex-col items-center justify-center text-center text-gray-400 border-2 border-dashed border-gray-700 rounded-lg p-12">
+                <div className="flex flex-col items-center justify-center text-center text-muted-foreground border-2 border-dashed border-border rounded-lg p-12">
                   <Search className="w-16 h-16 mb-4" />
-                  <h2 className="text-xl font-semibold text-white">No notes found.</h2>
+                  <h2 className="text-xl font-semibold text-foreground">No notes found.</h2>
                   <p className="mt-2">Try adjusting your search or filter.</p>
                 </div>
               )}
