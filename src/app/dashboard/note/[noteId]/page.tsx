@@ -1,6 +1,6 @@
+// src/app/dashboard/note/[noteId]/page.tsx
 "use client";
 
-// 1. IMPORTS
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
@@ -9,14 +9,14 @@ import { db, storage } from '@/firebase/config';
 import { doc, getDoc, addDoc, collection, serverTimestamp, query, where, getDocs, deleteDoc } from 'firebase/firestore'; 
 import { ref, deleteObject } from 'firebase/storage';
 import { Note } from '../../../types/Note';
-import { Star, FileText, User, CheckCircle, AlertTriangle, BadgeCheck, Pencil, Trash2 } from 'lucide-react';
+import { Star, FileText, User, CheckCircle, AlertTriangle, Pencil, Trash2 } from 'lucide-react';
+import { ReviewsSection } from '../../../components/ReviewsSection';
 
 export default function NoteDetailPage() {
   
-  // 2. HOOKS & STATE
   const { user } = useAuth();
   const params = useParams();
-  const router = useRouter(); // For delete redirect
+  const router = useRouter(); 
   const { noteId } = params;
 
   const [note, setNote] = useState<Note | null>(null);
@@ -35,7 +35,6 @@ export default function NoteDetailPage() {
     }).format(value);
   };
 
-  // 3. DATA FETCHING
   useEffect(() => {
     const fetchNoteAndPurchaseStatus = async () => {
       if (typeof noteId !== 'string' || !user) {
@@ -47,7 +46,7 @@ export default function NoteDetailPage() {
         setIsLoading(true);
         setError(null);
 
-        // --- Step A: Fetch the Note ---
+        // 1. Fetch Note
         const noteRef = doc(db, 'notes', noteId);
         const docSnap = await getDoc(noteRef);
 
@@ -60,11 +59,10 @@ export default function NoteDetailPage() {
         const noteData = { id: docSnap.id, ...docSnap.data() } as Note;
         setNote(noteData);
 
-        // --- Step B: Check purchase status ---
-        if (noteData.authorId === user.uid) {
-          // User is the owner, no need to do anything else
-        } else {
-          // User is not the owner, check if they've bought it
+        // 2. Check Purchase Status
+        // IMPORTANT: We only check purchases if the user is NOT the author.
+        // Authors don't need to buy their own notes, but they also shouldn't review them.
+        if (noteData.authorId !== user.uid) {
           const q = query(
             collection(db, 'purchases'),
             where("userId", "==", user.uid), 
@@ -76,6 +74,7 @@ export default function NoteDetailPage() {
             setHasPurchased(true);
           }
         }
+        // Note: If authorId === user.uid, hasPurchased remains FALSE.
 
       } catch (err) {
         console.error("Error fetching data:", err);
@@ -88,13 +87,13 @@ export default function NoteDetailPage() {
     fetchNoteAndPurchaseStatus();
   }, [noteId, user]);
 
-  // 4. PURCHASE FUNCTION
+  // ... (handlePurchase and handleDelete functions remain the same) ...
+  
   const handlePurchase = async () => {
     if (!user || !note) {
       setPurchaseError("You must be logged in to purchase a note.");
       return;
     }
-    
     if (hasPurchased) return;
     
     setIsPurchasing(true);
@@ -102,8 +101,7 @@ export default function NoteDetailPage() {
     setPurchaseSuccess(false);
 
     try {
-      const purchasesRef = collection(db, 'purchases');
-      await addDoc(purchasesRef, {
+      await addDoc(collection(db, 'purchases'), {
         userId: user.uid,
         noteId: note.id,
         noteTitle: note.title,
@@ -113,89 +111,58 @@ export default function NoteDetailPage() {
       setPurchaseSuccess(true);
       setHasPurchased(true);
     } catch (err) {
-      console.error("Error purchasing note: ", err);
+      console.error("Error purchasing: ", err);
       setPurchaseError("Failed to purchase. Please try again.");
     } finally {
       setIsPurchasing(false);
     }
   };
 
-  // 4.5. DELETE FUNCTION
   const handleDelete = async () => {
     if (!user || !note || !(user.uid === note.authorId)) return;
-
-    if (window.confirm("Are you sure you want to permanently delete this note? This action cannot be undone.")) {
+    if (window.confirm("Are you sure? This cannot be undone.")) {
       try {
-        // 1. Delete the PDF from Firebase Storage
-        const storageRef = ref(storage, note.pdfUrl);
-        await deleteObject(storageRef);
-
-        // 2. Delete the Note document from Firestore
-        const noteRef = doc(db, 'notes', note.id);
-        await deleteDoc(noteRef);
-
-        // 3. Redirect to 'My Notes' page
+        await deleteObject(ref(storage, note.pdfUrl));
+        await deleteDoc(doc(db, 'notes', note.id));
         router.push('/dashboard/my-notes');
-
       } catch (err) {
-        console.error("Error deleting note: ", err);
-        setPurchaseError("Failed to delete note. Please try again.");
+        setPurchaseError("Failed to delete note.");
       }
     }
   };
 
-  // 5. RENDER LOGIC
-  if (isLoading) {
-    return <div className="p-8 text-center text-muted-foreground">Loading...</div>;
-  }
-  if (error) {
-    return <div className="p-8 text-center text-destructive">{error}</div>;
-  }
-  if (!note) {
-    return <div className="p-8 text-center text-muted-foreground">Note not found.</div>;
-  }
+  if (isLoading) return <div className="p-8 text-center text-muted-foreground">Loading...</div>;
+  if (error) return <div className="p-8 text-center text-destructive">{error}</div>;
+  if (!note) return <div className="p-8 text-center text-muted-foreground">Note not found.</div>;
 
   const isOwner = user?.uid === note.authorId;
 
-  // 6. JSX (The View)
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto">
       <div className="bg-card border-border rounded-lg shadow-lg overflow-hidden">
         
-        {/* --- MODIFIED PDF VIEWER --- */}
+        {/* PDF Viewer Logic: Visible if Owner OR Purchased */}
         {isOwner || hasPurchased ? (
           <div className="aspect-video bg-background">
-            <iframe
-              src={note.pdfUrl}
-              title={note.title}
-              width="100%"
-              className="w-full h-96"
-            />
+            <iframe src={note.pdfUrl} title={note.title} width="100%" className="w-full h-96" />
             <p className="p-4 text-center text-muted-foreground text-sm">
               Can&apos;t see the PDF? 
-              <a 
-                href={note.pdfUrl} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-primary hover:underline ml-1 cursor-pointer"
-              >
+              <a href={note.pdfUrl} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline ml-1">
                 Open in a new tab
               </a>
             </p>
           </div>
         ) : (
-          // Original placeholder for non-purchased notes
           <div className="h-48 bg-secondary w-full flex items-center justify-center text-secondary-foreground">
             <FileText className="w-16 h-16" />
             <span className="ml-4 text-lg font-semibold">Preview Not Available</span>
           </div>
         )}
-        {/* --- END OF MODIFIED VIEWER --- */}
-
 
         <div className="p-6">
           <h1 className="text-3xl font-bold text-foreground mb-2">{note.title}</h1>
           <p className="text-lg text-muted-foreground mb-4">{note.course}</p>
+          
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-2">
               <User className="w-4 h-4 text-muted-foreground" />
@@ -207,56 +174,47 @@ export default function NoteDetailPage() {
             </div>
           </div>
           
-          {/* --- MODIFIED BUTTON LOGIC --- */}
+          {/* Action Buttons */}
           {isOwner ? (
-            // User is the owner: Show Edit and Delete buttons
             <div className="grid grid-cols-2 gap-4">
-              <Link
-                href={`/dashboard/note/${note.id}/edit`}
-                className="flex items-center justify-center w-full py-3 font-bold text-secondary-foreground bg-secondary rounded-lg transition-colors hover:bg-secondary/90"
-              >
-                <Pencil className="w-5 h-5 mr-2" /> 
-                Edit Note
+              <Link href={`/dashboard/note/${note.id}/edit`} className="flex items-center justify-center w-full py-3 font-bold text-secondary-foreground bg-secondary rounded-lg hover:bg-secondary/90">
+                <Pencil className="w-5 h-5 mr-2" /> Edit Note
               </Link>
-              <button
-                onClick={handleDelete}
-                className="flex items-center justify-center w-full py-3 font-bold text-destructive-foreground bg-destructive rounded-lg transition-colors hover:bg-destructive/90"
-              >
-                <Trash2 className="w-5 h-5 mr-2" />
-                Delete Note
+              <button onClick={handleDelete} className="flex items-center justify-center w-full py-3 font-bold text-destructive-foreground bg-destructive rounded-lg hover:bg-destructive/90">
+                <Trash2 className="w-5 h-5 mr-2" /> Delete Note
               </button>
             </div>
           ) : (
-            // User is NOT the owner: Show Buy or Purchased button
             <button
               onClick={handlePurchase}
               disabled={hasPurchased || isPurchasing || purchaseSuccess}
               className={`w-full py-3 font-bold text-primary-foreground rounded-lg transition-colors ${
                 hasPurchased || purchaseSuccess
                   ? 'bg-success cursor-not-allowed'
-                  : 'bg-primary hover:bg-primary/90 disabled:bg-muted/50 disabled:cursor-not-allowed'
+                  : 'bg-primary hover:bg-primary/90 disabled:opacity-50'
               }`}
             >
               {hasPurchased || purchaseSuccess ? (
                 <span className="flex items-center justify-center">
                   <CheckCircle className="w-5 h-5 mr-2" />
-                  Successfully Purchased!
+                  {hasPurchased ? "You own this note" : "Successfully Purchased!"}
                 </span>
-              ) : isPurchasing ? (
-                'Purchasing...'
-              ) : (
-                `Buy Now (${formatCurrency(note.price)})`
-              )}
+              ) : isPurchasing ? 'Purchasing...' : `Buy Now (${formatCurrency(note.price)})`}
             </button>
           )}
-          {/* --- END OF MODIFIED BUTTON LOGIC --- */}
           
           {purchaseError && (
             <p className="mt-4 text-sm text-center text-destructive flex items-center justify-center">
-              <AlertTriangle className="w-4 h-4 mr-1" />
-              {purchaseError}
+              <AlertTriangle className="w-4 h-4 mr-1" /> {purchaseError}
             </p>
           )}
+
+          {/* Reviews Section */}
+          {/* hasPurchased is FALSE for owners, so they cannot review */}
+          <ReviewsSection 
+            noteId={note.id} 
+            canReview={hasPurchased} 
+          />
         </div>
       </div>
     </div>
