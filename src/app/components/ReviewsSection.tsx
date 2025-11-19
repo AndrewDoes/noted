@@ -318,13 +318,13 @@ export const ReviewsSection = ({ noteId, canReview }: ReviewsSectionProps) => {
 
                 {/* --- Reply Input Form --- */}
                 {replyingTo === review.id && (
-                  <form onSubmit={(e) => handleReplySubmit(e, review.id)} className="mt-2 mb-4 flex gap-2">
+                  <form onSubmit={(e) => handleReplySubmit(e, review.id)} className="mt-2 mb-4 flex flex-col md:flex-row ">
                     <input 
                       type="text" 
                       value={replyText}
                       onChange={(e) => setReplyText(e.target.value)}
                       placeholder="Write a reply..."
-                      className="flex-1 px-3 py-2 text-sm rounded-md bg-secondary border border-border focus:outline-none focus:border-primary"
+                      className="flex-1 px-3 py-2 text-sm mb-2 mr-0 md:mr-2 md:mb-0  rounded-md bg-secondary border border-border focus:outline-none focus:border-primary "
                       autoFocus
                     />
                     <button type="submit" className="px-3 py-2 bg-primary text-primary-foreground text-sm rounded-md font-medium">

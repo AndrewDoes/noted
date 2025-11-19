@@ -118,7 +118,7 @@ export default function TransactionsPage() {
                 </div>
             ) : (
                 // This is the transaction table
-                <div className="bg-card rounded-lg shadow-lg overflow-hidden border border-border">
+                <div className="bg-card rounded-lg shadow-lg overflow-scroll lg:overflow-hidden border border-border">
                     <table className="w-full min-w-full divide-y divide-border">
                         <thead className="bg-secondary/50">
                             <tr>
