@@ -52,47 +52,47 @@ export default function SignUpPage() {
         }
     }
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-900">
-            <div className="w-full max-w-md p-8 space-y-6 bg-gray-800 rounded-lg shadow-lg">
-                <h1 className="text-3xl font-bold text-center text-white">Create Your Noted Account</h1>
+        <div className="flex items-center justify-center min-h-screen bg-background">
+            <div className="w-full max-w-md p-8 space-y-6 bg-card border-border rounded-lg shadow-lg">
+                <h1 className="text-3xl font-bold text-center text-card-foreground">Create Your Noted Account</h1>
                 <form onSubmit={handleSignUp} className="space-y-6">
                     <div>
-                        <label className="block text-sm font-medium text-gray-300">Binusian Email</label>
+                        <label className="block text-sm font-medium text-muted-foreground">Binusian Email</label>
                         <input
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            className="w-full px-3 py-2 mt-1 text-white bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            className="w-full px-3 py-2 mt-1 text-secondary-foreground bg-secondary border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
                             placeholder="your.name@binus.ac.id"
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-300">Password</label>
+                        <label className="block text-sm font-medium text-muted-foreground">Password</label>
                         <input
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
                             minLength={6}
-                            className="w-full px-3 py-2 mt-1 text-white bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            className="w-full px-3 py-2 mt-1 text-secondary-foreground bg-secondary border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
                             placeholder="••••••••"
                         />
                     </div>
-                    {error && <p className="text-sm text-center text-red-500">{error}</p>}
+                    {error && <p className="text-sm text-center text-destructive">{error}</p>}
                     <div>
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full py-2 font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700 disabled:bg-indigo-400 disabled:cursor-not-allowed"
+                            className="w-full py-2 font-semibold text-primary-foreground bg-primary rounded-md hover:bg-primary/90 disabled:bg-primary/40 disabled:cursor-not-allowed"
                         >
                             {isLoading ? 'Creating Account...' : 'Sign Up'}
                         </button>
                     </div>
                 </form>
-                <p className="text-sm text-center text-gray-400">
+                <p className="text-sm text-center text-muted-foreground">
                     Already have an account?{' '}
-                    <Link href="/login" className="font-medium text-indigo-400 hover:underline">
+                    <Link href="/login" className="font-medium text-primary/80 hover:underline">
                         Log In
                     </Link>
                 </p>
