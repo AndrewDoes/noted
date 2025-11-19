@@ -146,13 +146,13 @@ export default function NoteDetailPage() {
 
   // 5. RENDER LOGIC
   if (isLoading) {
-    return <div className="p-8 text-center text-gray-400">Loading...</div>;
+    return <div className="p-8 text-center text-muted-foreground">Loading...</div>;
   }
   if (error) {
-    return <div className="p-8 text-center text-red-500">{error}</div>;
+    return <div className="p-8 text-center text-destructive">{error}</div>;
   }
   if (!note) {
-    return <div className="p-8 text-center text-gray-400">Note not found.</div>;
+    return <div className="p-8 text-center text-muted-foreground">Note not found.</div>;
   }
 
   const isOwner = user?.uid === note.authorId;
@@ -160,24 +160,24 @@ export default function NoteDetailPage() {
   // 6. JSX (The View)
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto">
-      <div className="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+      <div className="bg-card border-border rounded-lg shadow-lg overflow-hidden">
         
         {/* --- MODIFIED PDF VIEWER --- */}
         {isOwner || hasPurchased ? (
-          <div className="aspect-video bg-gray-900">
+          <div className="aspect-video bg-background">
             <iframe
               src={note.pdfUrl}
               title={note.title}
               width="100%"
               className="w-full h-96"
             />
-            <p className="p-4 text-center text-gray-400 text-sm">
+            <p className="p-4 text-center text-muted-foreground text-sm">
               Can&apos;t see the PDF? 
               <a 
                 href={note.pdfUrl} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-indigo-400 hover:underline ml-1 cursor-pointer"
+                className="text-primary hover:underline ml-1 cursor-pointer"
               >
                 Open in a new tab
               </a>
@@ -185,7 +185,7 @@ export default function NoteDetailPage() {
           </div>
         ) : (
           // Original placeholder for non-purchased notes
-          <div className="h-48 bg-gray-700 w-full flex items-center justify-center text-gray-500">
+          <div className="h-48 bg-secondary w-full flex items-center justify-center text-secondary-foreground">
             <FileText className="w-16 h-16" />
             <span className="ml-4 text-lg font-semibold">Preview Not Available</span>
           </div>
@@ -194,16 +194,16 @@ export default function NoteDetailPage() {
 
 
         <div className="p-6">
-          <h1 className="text-3xl font-bold text-white mb-2">{note.title}</h1>
-          <p className="text-lg text-gray-400 mb-4">{note.course}</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">{note.title}</h1>
+          <p className="text-lg text-muted-foreground mb-4">{note.course}</p>
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-2">
-              <User className="w-4 h-4 text-gray-400" />
-              <span className="text-sm text-gray-300">{note.author}</span>
+              <User className="w-4 h-4 text-muted-foreground" />
+              <span className="text-sm text-muted-foreground">{note.author}</span>
             </div>
             <div className="flex items-center space-x-1">
-              <Star className="w-5 h-5 text-yellow-400 fill-current" />
-              <span className="text-lg font-semibold text-white">{note.rating}</span>
+              <Star className="w-5 h-5 text-stars fill-current" />
+              <span className="text-lg font-semibold text-foreground">{note.rating}</span>
             </div>
           </div>
           
@@ -213,14 +213,14 @@ export default function NoteDetailPage() {
             <div className="grid grid-cols-2 gap-4">
               <Link
                 href={`/dashboard/note/${note.id}/edit`}
-                className="flex items-center justify-center w-full py-3 font-bold text-white bg-gray-600 rounded-lg transition-colors hover:bg-gray-500"
+                className="flex items-center justify-center w-full py-3 font-bold text-secondary-foreground bg-secondary rounded-lg transition-colors hover:bg-secondary/90"
               >
                 <Pencil className="w-5 h-5 mr-2" /> 
                 Edit Note
               </Link>
               <button
                 onClick={handleDelete}
-                className="flex items-center justify-center w-full py-3 font-bold text-white bg-red-600 rounded-lg transition-colors hover:bg-red-700"
+                className="flex items-center justify-center w-full py-3 font-bold text-destructive-foreground bg-destructive rounded-lg transition-colors hover:bg-destructive/90"
               >
                 <Trash2 className="w-5 h-5 mr-2" />
                 Delete Note
@@ -231,10 +231,10 @@ export default function NoteDetailPage() {
             <button
               onClick={handlePurchase}
               disabled={hasPurchased || isPurchasing || purchaseSuccess}
-              className={`w-full py-3 font-bold text-white rounded-lg transition-colors ${
+              className={`w-full py-3 font-bold text-primary-foreground rounded-lg transition-colors ${
                 hasPurchased || purchaseSuccess
-                  ? 'bg-green-600 cursor-not-allowed'
-                  : 'bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400/50 disabled:cursor-not-allowed'
+                  ? 'bg-success cursor-not-allowed'
+                  : 'bg-primary hover:bg-primary/90 disabled:bg-muted/50 disabled:cursor-not-allowed'
               }`}
             >
               {hasPurchased || purchaseSuccess ? (
@@ -252,7 +252,7 @@ export default function NoteDetailPage() {
           {/* --- END OF MODIFIED BUTTON LOGIC --- */}
           
           {purchaseError && (
-            <p className="mt-4 text-sm text-center text-red-500 flex items-center justify-center">
+            <p className="mt-4 text-sm text-center text-destructive flex items-center justify-center">
               <AlertTriangle className="w-4 h-4 mr-1" />
               {purchaseError}
             </p>
