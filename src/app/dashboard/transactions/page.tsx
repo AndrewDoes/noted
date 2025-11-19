@@ -59,46 +59,6 @@ export default function TransactionsPage() {
                     }));
                 setTransactions(transactionsList.filter(t => t !== null) as Transaction[]);
 
-                // --- YOUR CODE GOES HERE ---
-                //
-                // 1. Fetch all of the user's purchase records, ordered by date
-                //    - Create a reference to the 'purchases' collection
-                //    - Create a query 'q' to find all purchases
-                //      - 'where("userId", "==", user.uid)'
-                //      - 'orderBy("purchasedAt", "desc")'
-                //    - Get the snapshot: const purchaseSnapshot = await getDocs(q);
-                //
-                // 2. Check if the snapshot is empty (purchaseSnapshot.empty)
-                //    - If it is, setTransactions([]) and setIsLoading(false), then return.
-                //
-                // 3. Loop through each purchase and fetch the related note details
-                //    - This is the tricky part. Use 'Promise.all' to fetch all notes in parallel.
-                //    - const transactionsList = await Promise.all(
-                //        purchaseSnapshot.docs.map(async (purchaseDoc) => {
-                //          const purchaseData = purchaseDoc.data();
-                //          // Create a ref to the specific note
-                //          const noteRef = doc(db, 'notes', purchaseData.noteId);
-                //          const noteSnap = await getDoc(noteRef);
-                //
-                //          if (noteSnap.exists()) {
-                //            // 4. Combine the purchase data and note data
-                //            return {
-                //              ...noteSnap.data(),
-                //              id: noteSnap.id,
-                //              purchaseId: purchaseDoc.id,
-                //              purchasedAt: purchaseData.purchasedAt,
-                //            } as Transaction;
-                //          } else {
-                //            return null; // Handle cases where a note might have been deleted
-                //          }
-                //        })
-                //      );
-                //
-                // 5. Filter out any nulls (deleted notes) and set the state
-                //    - setTransactions(transactionsList.filter(t => t !== null) as Transaction[]);
-                //
-                // --- END OF YOUR CODE ---
-
             } catch (err) {
                 console.error("Error fetching transactions: ", err);
                 setError("Failed to load transaction history.");
@@ -129,16 +89,16 @@ export default function TransactionsPage() {
     };
 
     if (isLoading) {
-        return <div className="p-8 text-center text-gray-400">Loading your transactions...</div>;
+        return <div className="p-8 text-center text-card-foreground">Loading your transactions...</div>;
     }
 
     if (error) {
-        return <div className="p-8 text-center text-red-500">{error}</div>;
+        return <div className="p-8 text-center text-destructive">{error}</div>;
     }
 
     return (
         <div className="p-4 sm:p-6 lg:p-8">
-            <h1 className="text-3xl font-bold text-white mb-8">Transaction History</h1>
+            <h1 className="text-3xl font-bold text-foreground mb-8">Transaction History</h1>
 
             {/* --- YOUR CODE GOES HERE (JSX) --- */}
             {/*
@@ -151,30 +111,30 @@ export default function TransactionsPage() {
 
             {transactions.length === 0 ? (
                 // This is the "empty state"
-                <div className="flex flex-col items-center justify-center text-center text-gray-400 border-2 border-dashed border-gray-700 rounded-lg p-12">
+                <div className="flex flex-col items-center justify-center text-center text-card-foreground border-2 border-dashed border-border rounded-lg p-12">
                     <ShoppingCart className="w-16 h-16 mb-4" />
-                    <h2 className="text-xl font-semibold text-white">You haven&apos;t purchased any notes yet.</h2>
+                    <h2 className="text-xl font-semibold text-foreground">You haven&apos;t purchased any notes yet.</h2>
                     <p className="mt-2">Your purchased notes will appear here.</p>
                 </div>
             ) : (
                 // This is the transaction table
-                <div className="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-                    <table className="w-full min-w-full divide-y divide-gray-700">
-                        <thead className="bg-gray-700/50">
+                <div className="bg-card rounded-lg shadow-lg overflow-hidden border border-border">
+                    <table className="w-full min-w-full divide-y divide-border">
+                        <thead className="bg-secondary/50">
                             <tr>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Note Title</th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Course</th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Date</th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Price</th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-card-foreground uppercase tracking-wider">Note Title</th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-card-foreground uppercase tracking-wider">Course</th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-card-foreground uppercase tracking-wider">Date</th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-card-foreground uppercase tracking-wider">Price</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-700">
+                        <tbody className="divide-y divide-borders">
                             {transactions.map((tx) => (
                                 <tr key={tx.purchaseId}>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{tx.title}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{tx.course}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{formatDate(tx.purchasedAt)}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-400">{formatCurrency(tx.price)}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">{tx.title}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-card-foreground">{tx.course}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-card-foreground">{formatDate(tx.purchasedAt)}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-primary/90">{formatCurrency(tx.price)}</td>
                                 </tr>
                             ))}
                         </tbody>
