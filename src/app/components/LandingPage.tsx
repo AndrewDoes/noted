@@ -4,7 +4,7 @@ import { FileText, Zap, Users } from 'lucide-react';
 
 export const LandingPage = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen px-4 text-center bg-background">
+    <div className="my-20 lg:my-0 flex flex-col items-center justify-center min-h-screen px-12 md:px-4 text-center bg-background">
       <header className="flex flex-col items-center">
         <h1 className="text-6xl font-extrabold tracking-tighter text-primary md:text-7xl lg:text-8xl">
           Noted
