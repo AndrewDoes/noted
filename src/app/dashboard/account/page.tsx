@@ -131,7 +131,7 @@ export default function AccountPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-400 h-full mx-auto">
 
                 {/* --- Profile Details Form --- */}
-                <form onSubmit={handleProfileUpdate} className="bg-card p-6 rounded-lg shadow-lg space-y-4">
+                <form onSubmit={handleProfileUpdate} className="bg-card p-6 rounded-lg shadow-lg space-y-4 border border-border">
                     <h2 className="text-xl font-semibold text-card-foreground mb-4 flex items-center">
                         <User className="w-5 h-5 mr-2" />
                         Profile Details
@@ -152,7 +152,7 @@ export default function AccountPage() {
                             id="fullName"
                             value={fullName}
                             onChange={(e) => setFullName(e.target.value)}
-                            className="block w-full px-4 py-3 mt-1 text-secondary-foreground bg-secondary border-border rounded-md foucs:outline-none focus:ring-2 focus:ring-ring focus:border-primary"
+                            className="block w-full px-4 py-3 mt-1 text-secondary-foreground bg-secondary border border-border rounded-md foucs:outline-none focus:ring-2 focus:ring-ring focus:border-primary"
                         />
                     </div>
 
@@ -187,7 +187,7 @@ export default function AccountPage() {
                 </form>
 
                 {/* --- Change Password Form --- */}
-                <form onSubmit={handlePasswordChange} className="bg-card p-6 rounded-lg shadow-lg space-y-4">
+                <form onSubmit={handlePasswordChange} className="bg-card p-6 rounded-lg shadow-lg space-y-4 border border-border">
                     <h2 className="text-xl font-semibold text-card-foreground mb-4 flex items-center">
                         <Lock className="w-5 h-5 mr-2" />
                         Change Password
@@ -201,7 +201,7 @@ export default function AccountPage() {
                             value={currentPassword}
                             onChange={(e) => setCurrentPassword(e.target.value)}
                             required
-                            className="block w-full px-4 py-3 mt-1 text-secondary-foreground bg-secondary border-border rounded-md focus:ring-ring focus:border-primary"
+                            className="block w-full px-4 py-3 mt-1 text-secondary-foreground bg-secondary border border-border rounded-md focus:ring-ring focus:border-primary"
                         />
                     </div>
 
@@ -214,7 +214,7 @@ export default function AccountPage() {
                             onChange={(e) => setNewPassword(e.target.value)}
                             required
                             minLength={6}
-                            className="block w-full px-4 py-3 mt-1 text-secondary-foreground bg-secondary border-border rounded-md focus:ring-ring focus:border-primary"
+                            className="block w-full px-4 py-3 mt-1 text-secondary-foreground bg-secondary border border-border rounded-md focus:ring-ring focus:border-primary"
                         />
                     </div>
 

@@ -76,67 +76,67 @@ export default function UploadPage() {
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 flex flex-col h-full">
-        <h1 className="text-4xl font-bold text-white">Upload Your Note</h1>
-        <p className="mt-2 text-gray-400">
+        <h1 className="text-4xl font-bold text-foreground">Upload Your Note</h1>
+        <p className="mt-2 text-muted-foreground">
           Share your knowledge with the community and earn money.
         </p>
 
-        <form onSubmit={handleSubmit} className="p-8 mt-8 space-y-6 bg-gray-800 rounded-lg w-full">
+        <form onSubmit={handleSubmit} className="p-8 mt-8 space-y-6 bg-card border border-border rounded-lg w-full">
           <div>
-            <label htmlFor="title" className="block text-sm font-medium text-gray-300">Note Title</label>
+            <label htmlFor="title" className="block text-sm font-medium text-card-foreground">Note Title</label>
             <input
               type="text"
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="block w-full px-4 py-3 mt-1 text-white bg-gray-700 border-gray-600 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+              className="block w-full px-4 py-3 mt-1 text-secondary-foreground bg-secondary border border-border rounded-md focus:ring-ring focus:border-primary"
               placeholder="e.g., Marketing Mid-Term Summary"
             />
           </div>
 
           <div>
-            <label htmlFor="course" className="block text-sm font-medium text-gray-300">Course Code / Name</label>
+            <label htmlFor="course" className="block text-sm font-medium text-card-foreground">Course Code / Name</label>
             <input
               type="text"
               id="course"
               value={course}
               onChange={(e) => setCourse(e.target.value)}
-              className="block w-full px-4 py-3 mt-1 text-white bg-gray-700 border-gray-600 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+              className="block w-full px-4 py-3 mt-1 text-secondary-foreground bg-secondary border border-border rounded-md focus:ring-ring focus:border-primary"
               placeholder="e.g., MKTG101 - Binus University"
             />
           </div>
 
           <div>
-            <label htmlFor="price" className="block text-sm font-medium text-gray-300">Price (IDR)</label>
+            <label htmlFor="price" className="block text-sm font-medium text-card-foreground">Price (IDR)</label>
             <input
               type="number"
               id="price"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
-              className="block w-full px-4 py-3 mt-1 text-white bg-gray-700 border-gray-600 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+              className="block w-full px-4 py-3 mt-1 text-secondary-foreground bg-secondary border border-border rounded-md focus:ring-ring focus:border-primary"
               placeholder="e.g., 15000"
             />
           </div>
 
           <div>
-            <label htmlFor="file" className="block text-sm font-medium text-gray-300">PDF File</label>
+            <label htmlFor="file" className="block text-sm font-medium text-card-foreground">PDF File</label>
             <input
               type="file"
               id="file"
               onChange={handleFileChange}
               accept=".pdf"
-              className="block w-full mt-1 text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700"
+              className="block w-full mt-1 text-sm text-primary-foreground file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/80"
             />
-             <p className="mt-1 text-xs text-gray-500">Only .pdf files are accepted.</p>
+             <p className="mt-1 text-xs text-sec">Only .pdf files are accepted.</p>
           </div>
           
-          {error && <p className="text-sm text-center text-red-500">{error}</p>}
-          {successMessage && <p className="text-sm text-center text-green-500">{successMessage}</p>}
+          {error && <p className="text-sm text-center text-destructive">{error}</p>}
+          {successMessage && <p className="text-sm text-center text-success">{successMessage}</p>}
 
           <button
             type="submit"
             disabled={isUploading}
-            className="w-full px-4 py-3 font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700 disabled:bg-gray-500 disabled:cursor-not-allowed"
+            className="w-full px-4 py-3 font-semibold text-primary-foreground bg-primary rounded-md cursor-pointer hover:bg-primary/80 disabled:bg-gray-500 disabled:cursor-not-allowed"
           >
             {isUploading ? 'Uploading...' : 'Upload Note'}
           </button>
