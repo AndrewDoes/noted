@@ -72,7 +72,7 @@ export default function MyNotesPage() {
 
   return (
     <div className="p-4 sm:p-6 lg:p-8">
-      <h1 className="text-3xl font-bold text-white mb-6">My Uploaded Notes</h1>
+      <h1 className="text-3xl font-bold text-foreground mb-6">My Uploaded Notes</h1>
 
       {/* --- ADDED SEARCH AND FILTER UI --- */}
       <section className="space-y-8 mb-8">
@@ -95,23 +95,23 @@ export default function MyNotesPage() {
       {/* --------------------------------- */}
 
       {isLoading ? (
-        <p className="text-center text-gray-400">Loading your notes...</p>
+        <p className="text-center text-muted-foreground">Loading your notes...</p>
       ) : error ? (
-        <p className="text-center text-red-500">{error}</p>
+        <p className="text-center text-destructive">{error}</p>
       ) : (
         <>
           {myNotes.length === 0 ? (
             // State for users who have not uploaded any notes
-            <div className="flex flex-col items-center justify-center text-center text-gray-400 border-2 border-dashed border-gray-700 rounded-lg p-12">
+            <div className="flex flex-col items-center justify-center text-center text-muted-foreground border-2 border-dashed border-border rounded-lg p-12">
               <Notebook className="w-16 h-16 mb-4" />
-              <h2 className="text-xl font-semibold text-white">You haven&apos;t uploaded any notes yet.</h2>
+              <h2 className="text-xl font-semibold text-foreground">You haven&apos;t uploaded any notes yet.</h2>
               <p className="mt-2">Your uploaded notes will appear here.</p>
             </div>
           ) : filteredNotes.length === 0 ? (
             // State for when filters/search find no results
-            <div className="flex flex-col items-center justify-center text-center text-gray-400 border-2 border-dashed border-gray-700 rounded-lg p-12">
+            <div className="flex flex-col items-center justify-center text-center text-muted-foreground border-2 border-dashed border-border rounded-lg p-12">
               <Search className="w-16 h-16 mb-4" />
-              <h2 className="text-xl font-semibold text-white">No notes found.</h2>
+              <h2 className="text-xl font-semibold text-foreground">No notes found.</h2>
               <p className="mt-2">Try adjusting your search or filter.</p>
             </div>
           ) : (
