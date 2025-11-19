@@ -41,6 +41,7 @@
   --border: #cbd5e1; 
   --input: #cbd5e1;
   --ring: #4f46e5; 
+  --stars: #f6d939;
 
   /* Success */
   --success: #22c55e;
@@ -83,6 +84,7 @@
     --border: #374151; 
     --input: #374151;
     --ring: #6366f1; 
+    --stars: #f6e05e;
     
     --success: #14532d; 
     --success-foreground: #86efac; 
@@ -118,6 +120,7 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-stars: var(--stars);
   
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
