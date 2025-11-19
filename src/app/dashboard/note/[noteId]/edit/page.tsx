@@ -86,62 +86,62 @@ export default function EditNotePage() {
   };
 
   if (isLoading) {
-    return <div className="p-8 text-center text-gray-400">Loading note details...</div>;
+    return <div className="p-8 text-center text-muted-foreground">Loading note details...</div>;
   }
 
   // 6. This JSX is based on your UploadPage
   return (
     <div className="p-4 sm:p-6 lg:p-8 flex flex-col h-full">
-        <h1 className="text-4xl font-bold text-white">Edit Note Details</h1>
-        <p className="mt-2 text-gray-400">
+        <h1 className="text-4xl font-bold text-foreground">Edit Note Details</h1>
+        <p className="mt-2 text-muted-foreground">
           Update the information for your note.
         </p>
 
-        <form onSubmit={handleSubmit} className="p-8 mt-8 space-y-6 bg-gray-800 rounded-lg w-full">
+        <form onSubmit={handleSubmit} className="p-8 mt-8 space-y-6 bg-card rounded-lg w-full">
           <div>
-            <label htmlFor="title" className="block text-sm font-medium text-gray-300">Note Title</label>
+            <label htmlFor="title" className="block text-sm font-medium text-muted-foreground">Note Title</label>
             <input
               type="text"
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="block w-full px-4 py-3 mt-1 text-white bg-gray-700 border-gray-600 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+              className="block w-full px-4 py-3 mt-1 text-secondary-foreground bg-secondary border-border rounded-md focus:ring-ring focus:border-primary"
               placeholder="e.g., Marketing Mid-Term Summary"
             />
           </div>
 
           <div>
-            <label htmlFor="course" className="block text-sm font-medium text-gray-300">Course Code / Name</label>
+            <label htmlFor="course" className="block text-sm font-medium text-muted-foreground">Course Code / Name</label>
             <input
               type="text"
               id="course"
               value={course}
               onChange={(e) => setCourse(e.target.value)}
-              className="block w-full px-4 py-3 mt-1 text-white bg-gray-700 border-gray-600 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+              className="block w-full px-4 py-3 mt-1 text-secondary-foreground bg-secondary border-border rounded-md focus:ring-ring focus:border-primary"
               placeholder="e.g., MKTG101 - Binus University"
             />
           </div>
 
           <div>
-            <label htmlFor="price" className="block text-sm font-medium text-gray-300">Price (IDR)</label>
+            <label htmlFor="price" className="block text-sm font-medium text-muted-foreground">Price (IDR)</label>
             <input
               type="number"
               id="price"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
-              className="block w-full px-4 py-3 mt-1 text-white bg-gray-700 border-gray-600 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+              className="block w-full px-4 py-3 mt-1 text-secondary-foreground bg-secondary border-border rounded-md focus:ring-ring focus:border-primary"
               placeholder="e.g., 15000"
             />
           </div>
 
-           <p className="mt-1 text-xs text-gray-500">Note: To change the PDF file, please delete this note and re-upload.</p>
+           <p className="mt-1 text-xs text-muted-foreground">Note: To change the PDF file, please delete this note and re-upload.</p>
           
-          {error && <p className="text-sm text-center text-red-500">{error}</p>}
+          {error && <p className="text-sm text-center text-destructive">{error}</p>}
 
           <button
             type="submit"
             disabled={isSaving}
-            className="w-full px-4 py-3 font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700 disabled:bg-gray-500 disabled:cursor-not-allowed"
+            className="w-full px-4 py-3 font-semibold text-primary-foreground bg-primary rounded-md hover:bg-primary/90 disabled:bg-muted disabled:cursor-not-allowed"
           >
             {isSaving ? 'Saving...' : 'Save Changes'}
           </button>
