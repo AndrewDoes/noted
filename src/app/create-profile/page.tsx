@@ -103,7 +103,7 @@ export default function CreateProfilePage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">
-      <div className="w-full max-w-md p-8 space-y-6 bg-card rounded-lg shadow-lg">
+      <div className="w-full max-w-md h-screen flex flex-col md:h-fit items-center justify-center p-8 space-y-6 bg-card border-border rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold text-center text-card-foreground">Welcome to Noted!</h1>
         <p className="text-center text-muted-foreground">Let&apos;s set up your profile.</p>
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -115,7 +115,7 @@ export default function CreateProfilePage() {
               onChange={(e) => setFullName(e.target.value)}
               required
               className="w-full px-3 py-2 mt-1 text-secondary-foreground bg-secondary border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
-              placeholder="e.g., Nicholas Andrew Sutiono"
+              placeholder="e.g., John Doe"
             />
           </div>
 
