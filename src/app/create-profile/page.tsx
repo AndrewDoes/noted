@@ -95,55 +95,55 @@ export default function CreateProfilePage() {
 
   if (isLoading || !user || userProfile) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-900">
-        <p className="text-white">Loading...</p>
+      <div className="flex items-center justify-center min-h-screen bg-background">
+        <p className="text-foreground">Loading...</p>
       </div>
     );
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-900">
-      <div className="w-full max-w-md p-8 space-y-6 bg-gray-800 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-center text-white">Welcome to Noted!</h1>
-        <p className="text-center text-gray-400">Let&apos;s set up your profile.</p>
+    <div className="flex items-center justify-center min-h-screen bg-background">
+      <div className="w-full max-w-md h-screen flex flex-col md:h-fit items-center justify-center p-8 space-y-6 bg-card border-border rounded-lg shadow-lg">
+        <h1 className="text-3xl font-bold text-center text-card-foreground">Welcome to Noted!</h1>
+        <p className="text-center text-muted-foreground">Let&apos;s set up your profile.</p>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-300">Full Name</label>
+            <label className="block text-sm font-medium text-muted-foreground">Full Name</label>
             <input
               type="text"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               required
-              className="w-full px-3 py-2 mt-1 text-white bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="e.g., Nicholas Andrew Sutiono"
+              className="w-full px-3 py-2 mt-1 text-secondary-foreground bg-secondary border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="e.g., John Doe"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300">Major</label>
+            <label className="block text-sm font-medium text-muted-foreground">Major</label>
             <select
               value={major}
               onChange={(e) => setMajor(e.target.value)}
               required
-              className={`w-full px-3 py-2 mt-1 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-                major === '' ? 'text-gray-400' : 'text-white'
+              className={`w-full px-3 py-2 mt-1 bg-secondary border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring ${
+                major === '' ? 'text-muted-foreground' : 'text-secondary-foreground'
               }`}
             >
               <option value="" disabled>Select your major</option>
               {binusMajors.map((maj) => (
-                <option key={maj} value={maj} className="text-white">
+                <option key={maj} value={maj} className="text-secondary-foreground">
                   {maj}
                 </option>
               ))}
             </select>
           </div>
 
-          {error && <p className="text-sm text-center text-red-500">{error}</p>}
+          {error && <p className="text-sm text-center text-destructive">{error}</p>}
           <div>
             <button
               type="submit"
               disabled={isSaving}
-              className="w-full py-2 font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700 disabled:bg-indigo-400/50 disabled:cursor-not-allowed"
+              className="w-full py-2 font-semibold text-primary-foreground bg-primary rounded-md hover:bg-primary/90 disabled:bg-primary/50 disabled:cursor-not-allowed"
             >
               {isSaving ? 'Saving...' : 'Save and Continue'}
             </button>
